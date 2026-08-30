@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pastor Abby's Flourish 50th</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0d0b0c;--card:#181416;--gold:#d7b56d;--cream:#fff9ef;--muted:#cfc3b6;--blush:#e9c9c3;--green:#2f8f64;--red:#b8505b;--amber:#b9892c}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:radial-gradient(circle at top,#2a1d20 0,#0d0b0c 42%);color:var(--cream)}
+    .hero{padding:64px 20px 30px;text-align:center;border-bottom:1px solid rgba(215,181,109,.22)}
+    .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:.8rem;font-weight:700}
+    h1{font-family:"Playfair Display",serif;font-size:clamp(2.4rem,7vw,5rem);margin:.4rem 0;color:var(--cream)}
+    .sub{max-width:780px;margin:0 auto;color:var(--muted);line-height:1.7;font-size:1.02rem}
+    .wrap{max-width:1180px;margin:0 auto;padding:34px 18px 60px}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}
+    .admin-btn{background:transparent;border:1px solid rgba(215,181,109,.35);color:var(--gold);padding:10px 14px;border-radius:999px;cursor:pointer}
+    .sync{font-size:.78rem;color:var(--muted);margin-left:8px}.sync.ok{color:#7dd6aa}.sync.bad{color:#ef9aa4}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));border:1px solid rgba(215,181,109,.2);border-radius:20px;padding:20px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+    .num{color:var(--gold);font-weight:700;font-size:.85rem}.gift{font-family:"Playfair Display",serif;font-size:1.45rem;margin:.45rem 0 .25rem}.price{color:var(--blush);font-weight:700;margin-bottom:14px}
+    .status{display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;font-size:.78rem;font-weight:800;letter-spacing:.04em;margin-bottom:14px}.available{background:rgba(47,143,100,.16);color:#7dd6aa}.reserved{background:rgba(184,80,91,.16);color:#ef9aa4}.group{background:rgba(185,137,44,.18);color:#e6c56e}
+    .actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:0;border-radius:12px;padding:11px 13px;font-weight:800;cursor:pointer;flex:1;min-width:120px}.primary{background:var(--gold);color:#191313}.secondary{background:#2a2326;color:var(--cream);border:1px solid rgba(255,255,255,.08)}.danger{background:#5a252c;color:#fff}.disabled{opacity:.45;cursor:not-allowed}
+    .note{font-size:.82rem;color:var(--muted);margin-top:10px;line-height:1.5}
+    .footer{text-align:center;color:#9f948a;padding:24px 18px 44px;font-size:.88rem}
+    dialog{border:1px solid rgba(215,181,109,.28);background:#171214;color:var(--cream);border-radius:18px;max-width:560px;width:92%;padding:0;box-shadow:0 28px 70px rgba(0,0,0,.55)}dialog::backdrop{background:rgba(0,0,0,.72)}
+    .modal{padding:22px}.modal h3{font-family:"Playfair Display",serif;margin-top:0;font-size:1.6rem}.field{display:flex;flex-direction:column;gap:6px;margin:12px 0}.field input{padding:12px;border-radius:10px;border:1px solid #4a3d40;background:#0f0c0d;color:white}.modal-actions{display:flex;gap:10px;margin-top:16px}.small{font-size:.82rem;color:var(--muted);line-height:1.5}
+    .admin-list{display:grid;gap:10px;max-height:48vh;overflow:auto}.admin-row{background:#211a1d;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+    .notice{margin:0 0 14px;padding:10px 12px;border-radius:10px;background:#211a1d;color:var(--muted);font-size:.84rem;display:none}.notice.show{display:block}.notice.error{color:#ef9aa4}.notice.success{color:#7dd6aa}
+    .hide{display:none!important}
+    @media(max-width:600px){.hero{padding-top:42px}.toolbar{align-items:flex-start;flex-direction:column}.btn{width:100%}}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="kicker">Celebrating 50 Beautiful Years</div>
+    <h1>Pastor Abby's Flourish 50th</h1>
+    <p class="sub">Celebrating 50 beautiful years of grace, impact and flourishing. Choose a gift you would love to give. Once selected, it will be marked reserved to help us avoid duplicates. Larger gifts can be shared as group gifts.</p>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <div>
+        <div class="legend">
+          <span><i class="dot" style="background:#2f8f64"></i>Available</span>
+          <span><i class="dot" style="background:#b8505b"></i>Reserved</span>
+          <span><i class="dot" style="background:#b9892c"></i>Group Gift</span>
+        </div>
+        <span id="syncState" class="sync">Connecting…</span>
+      </div>
+      <button class="admin-btn" id="adminOpen">Organiser View</button>
+    </div>
+    <section class="grid" id="giftGrid"></section>
+  </main>
+
+  <div class="footer">With love, from Pastor Abby's friends and well-wishers.</div>
+
+  <dialog id="reserveDialog">
+    <form class="modal" id="reserveForm">
+      <h3 id="reserveTitle">Reserve Gift</h3>
+      <p class="small" id="reserveHelp">Your name is stored privately for the organiser. Other visitors will only see whether an individual gift is available or reserved.</p>
+      <div id="reserveNotice" class="notice"></div>
+      <div class="field"><label for="personName">Your name</label><input id="personName" required maxlength="80" placeholder="e.g. Sarah" autocomplete="name" /></div>
+      <div class="field"><label for="personNote">Optional note</label><input id="personNote" maxlength="160" placeholder="e.g. Joining with Tola" /></div>
+      <input type="hidden" id="giftId" />
+      <input type="hidden" id="reserveMode" />
+      <div class="modal-actions"><button type="button" class="btn secondary" id="reserveCancel">Cancel</button><button type="submit" class="btn primary" id="confirmReserve">Confirm</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="adminLoginDialog">
+    <form class="modal" id="adminLoginForm">
+      <h3>Organiser Sign In</h3>
+      <p class="small">Sign in with the Email/Password organiser account you created in Firebase Authentication.</p>
+      <div id="loginNotice" class="notice"></div>
+      <div class="field"><label for="adminEmail">Email</label><input id="adminEmail" type="email" required autocomplete="username" /></div>
+      <div class="field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" required autocomplete="current-password" /></div>
+      <div class="modal-actions"><button type="button" class="btn secondary" id="loginCancel">Cancel</button><button type="submit" class="btn primary">Sign In</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="adminDialog">
+    <div class="modal">
+      <h3>Organiser View</h3>
+      <p class="small">Private reservation details and group-gift contributors are visible here only while you are signed in as the authorised organiser.</p>
+      <div id="adminNotice" class="notice"></div>
+      <div class="admin-list" id="adminList"></div>
+      <div class="modal-actions"><button class="btn secondary" id="adminClose">Close</button><button class="btn danger" id="adminLogout">Sign Out</button></div>
+    </div>
+  </dialog>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, signInAnonymously, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js';
+import { getFirestore, collection, doc, getDocs, onSnapshot, serverTimestamp, writeBatch, setDoc } from 'https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCPz4HtPHWVrY3SABkhEfGXwBOnLvSCCak',
+  authDomain: 'pastor-abby-flourish-50th.firebaseapp.com',
+  projectId: 'pastor-abby-flourish-50th',
+  storageBucket: 'pastor-abby-flourish-50th.firebasestorage.app',
+  messagingSenderId: '149924764993',
+  appId: '1:149924764993:web:69bc53fb178198cb9095c0'
+};
+const ORGANISER_UID = 'ZGMMQMMFdpQ4MJMWzMlQgbI9MnJ2';
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const gifts = [
+  {id:1,name:'📱 iPhone 16 Pro',price:'£700 – £1,200',group:true},
+  {id:2,name:'💻 MacBook Pro',price:'£1,500 – £2,500+',group:true},
+  {id:3,name:'⌚ Apple Watch',price:'£250 – £800',group:false},
+  {id:4,name:'🎧 AirPods Pro 3',price:'£230',group:false},
+  {id:5,name:'📱 iPad Pro / iPad Air',price:'£500 – £1,300',group:true},
+  {id:6,name:'💇🏽‍♀️ Dyson Airwrap',price:'£400 – £500',group:false},
+  {id:7,name:'👜 Designer Handbag',price:'£250 – £1,500+',group:true},
+  {id:8,name:'🌸 Designer Perfume (Creed)',price:'£250 – £350',group:false},
+  {id:9,name:'🧖🏽‍♀️ Luxury Spa Weekend',price:'£200 – £600',group:true},
+  {id:10,name:'✈️ European Weekend Getaway',price:'£250 – £800+',group:true},
+  {id:11,name:'📸 Professional 50th Birthday Photoshoot',price:'£150 – £500',group:false},
+  {id:12,name:'📖 Personalised 50th Birthday Memory Book',price:'£30 – £150',group:false}
+];
+
+const grid = document.getElementById('giftGrid');
+const syncState = document.getElementById('syncState');
+let publicStatus = {};
+let currentUser = null;
+let adminData = {reservations:{}, contributions:{}};
+
+function setNotice(id, text='', type='') {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'notice' + (text ? ' show' : '') + (type ? ' ' + type : '');
+}
+function isOrganiser(){ return currentUser && currentUser.uid === ORGANISER_UID; }
+
+function render(){
+  grid.innerHTML='';
+  gifts.forEach(g=>{
+    const r = publicStatus[String(g.id)];
+    const status = r ? 'reserved' : (g.group ? 'group' : 'available');
+    const label = r ? 'RESERVED' : (g.group ? 'GROUP GIFT' : 'AVAILABLE');
+    const card=document.createElement('article'); card.className='card';
+    const primaryLabel = r ? 'Reserved' : (g.group ? 'Contribute' : "I'll Get This");
+    const clickMode = g.group ? 'contribute' : 'reserve';
+    card.innerHTML=`<div class="num">#${g.id}</div><div class="gift">${g.name}</div><div class="price">${g.price}</div><div class="status ${status}">${label}</div><div class="actions"><button class="btn primary ${r?'disabled':''}" ${r?'disabled':''} data-id="${g.id}" data-mode="${clickMode}">${primaryLabel}</button></div><div class="note">${g.group?'Friends may combine contributions for this item. Group gifts remain open for additional contributors.':'Once selected, this gift will be marked reserved for everyone.'}</div>`;
+    grid.appendChild(card);
+  });
+  grid.querySelectorAll('button[data-id]').forEach(btn => btn.addEventListener('click', () => openReserve(Number(btn.dataset.id), btn.dataset.mode)));
+}
+
+function openReserve(id, mode){
+  const g=gifts.find(x=>x.id===id);
+  document.getElementById('giftId').value=id;
+  document.getElementById('reserveMode').value=mode;
+  document.getElementById('reserveTitle').textContent=(mode==='contribute'?'Contribute to ':'Reserve ')+g.name.replace(/^\S+\s/,'');
+  document.getElementById('personName').value='';
+  document.getElementById('personNote').value='';
+  document.getElementById('reserveHelp').textContent = mode==='contribute' ? 'Your contribution will be recorded privately for the organiser. The group gift remains open for other contributors.' : 'Your name is stored privately for the organiser. Other visitors will only see that this gift is reserved.';
+  setNotice('reserveNotice');
+  document.getElementById('reserveDialog').showModal();
+}
+
+document.getElementById('reserveCancel').onclick=()=>document.getElementById('reserveDialog').close();
+
+document.getElementById('reserveForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const button=document.getElementById('confirmReserve');
+  const id=String(document.getElementById('giftId').value);
+  const mode=document.getElementById('reserveMode').value;
+  const name=document.getElementById('personName').value.trim();
+  const note=document.getElementById('personNote').value.trim();
+  if(!name || !currentUser) return;
+  button.disabled=true; button.textContent='Saving…'; setNotice('reserveNotice');
+  try{
+    if(mode==='reserve'){
+      if(publicStatus[id]) throw new Error('This gift has just been reserved by someone else.');
+      const batch=writeBatch(db);
+      const statusRef=doc(db,'giftStatus',id);
+      const privateRef=doc(db,'reservations',id);
+      batch.set(statusRef,{status:'reserved',reservedByUid:currentUser.uid,reservedAt:serverTimestamp()});
+      batch.set(privateRef,{giftId:Number(id),name,note,ownerUid:currentUser.uid,createdAt:serverTimestamp()});
+      await batch.commit();
+      setNotice('reserveNotice','Thank you — this gift is now reserved.','success');
+    } else {
+      const contributionId=currentUser.uid;
+      await setDoc(doc(db,'groupContributions',id,'entries',contributionId),{giftId:Number(id),name,note,ownerUid:currentUser.uid,createdAt:serverTimestamp()});
+      setNotice('reserveNotice','Thank you — your contribution has been recorded.','success');
+    }
+    setTimeout(()=>document.getElementById('reserveDialog').close(),850);
+  }catch(err){
+    console.error(err);
+    const msg = err.code==='permission-denied' ? 'Firebase blocked this request. Please check that the Firestore security rules supplied with this registry have been published.' : (err.message || 'Unable to save your choice. Please try again.');
+    setNotice('reserveNotice',msg,'error');
+  }finally{button.disabled=false;button.textContent='Confirm';}
+});
+
+async function ensureSignedIn(){
+  if(!auth.currentUser) await signInAnonymously(auth);
+}
+
+onAuthStateChanged(auth, async user=>{
+  currentUser=user;
+  if(!user){
+    try{ await signInAnonymously(auth); }catch(err){ console.error(err); syncState.textContent='Authentication error'; syncState.className='sync bad'; }
+  }
+});
+
+onSnapshot(collection(db,'giftStatus'), snap=>{
+  publicStatus={};
+  snap.forEach(d=>publicStatus[d.id]=d.data());
+  syncState.textContent='Live reservations connected'; syncState.className='sync ok';
+  render();
+}, err=>{
+  console.error(err); syncState.textContent='Firebase connection/rules error'; syncState.className='sync bad'; render();
+});
+
+async function loadAdminData(){
+  if(!isOrganiser()) return;
+  setNotice('adminNotice','Loading…');
+  adminData={reservations:{},contributions:{}};
+  const rs=await getDocs(collection(db,'reservations'));
+  rs.forEach(d=>adminData.reservations[d.id]=d.data());
+  for(const g of gifts.filter(x=>x.group)){
+    const cs=await getDocs(collection(db,'groupContributions',String(g.id),'entries'));
+    adminData.contributions[g.id]=[];
+    cs.forEach(d=>adminData.contributions[g.id].push(d.data()));
+  }
+  setNotice('adminNotice');
+  renderAdmin();
+}
+
+function renderAdmin(){
+  const el=document.getElementById('adminList'); el.innerHTML='';
+  gifts.forEach(g=>{
+    const row=document.createElement('div'); row.className='admin-row';
+    if(g.group){
+      const list=adminData.contributions[g.id]||[];
+      const detail=list.length ? list.map((c,i)=>`${i+1}. <b>${escapeHtml(c.name||'Unnamed')}</b>${c.note?` — ${escapeHtml(c.note)}`:''}`).join('<br>') : 'No contributions yet';
+      row.innerHTML=`<strong>${g.name}</strong><br><span>${detail}</span>`;
+    } else {
+      const r=adminData.reservations[String(g.id)];
+      row.innerHTML=`<strong>${g.name}</strong><br><span>${r?`Reserved by <b>${escapeHtml(r.name||'Unnamed')}</b>${r.note?` — ${escapeHtml(r.note)}`:''}`:'Not yet reserved'}</span>`;
+    }
+    el.appendChild(row);
+  });
+}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+
+document.getElementById('adminOpen').onclick=async()=>{
+  if(isOrganiser()){
+    document.getElementById('adminDialog').showModal();
+    try{await loadAdminData();}catch(err){console.error(err);setNotice('adminNotice','Could not load organiser data. Check Firestore rules.','error');}
+  } else {
+    setNotice('loginNotice');
+    document.getElementById('adminLoginDialog').showModal();
+  }
+};
+document.getElementById('loginCancel').onclick=()=>document.getElementById('adminLoginDialog').close();
+document.getElementById('adminLoginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=document.getElementById('adminEmail').value.trim();
+  const password=document.getElementById('adminPassword').value;
+  setNotice('loginNotice','Signing in…');
+  try{
+    const cred=await signInWithEmailAndPassword(auth,email,password);
+    if(cred.user.uid!==ORGANISER_UID){ await signOut(auth); await ensureSignedIn(); throw new Error('This account is not authorised as the organiser.'); }
+    document.getElementById('adminLoginDialog').close();
+    document.getElementById('adminDialog').showModal();
+    await loadAdminData();
+  }catch(err){console.error(err);setNotice('loginNotice',err.message?.includes('not authorised')?err.message:'Sign-in failed. Check your organiser email/password and that Email/Password sign-in is enabled.','error');}
+});
+document.getElementById('adminClose').onclick=()=>document.getElementById('adminDialog').close();
+document.getElementById('adminLogout').onclick=async()=>{
+  document.getElementById('adminDialog').close();
+  await signOut(auth); await ensureSignedIn();
+};
+
+render();
+ensureSignedIn().catch(console.error);
+</script>
+</body>
+</html>
